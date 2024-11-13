@@ -45,7 +45,7 @@ export default function Login() {
               <Shield className="h-12 w-12 text-primary" />
             </div>
             <CardTitle className="text-2xl text-center">
-              Bem-vindo de volta, Senhor
+              Bem-vindo de volta, Agente
             </CardTitle>
             <CardDescription className="text-center">
               Faça login para acessar o painel de polícia RastreIA
