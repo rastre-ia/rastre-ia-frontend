@@ -1,7 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useAnimation, useInView } from "framer-motion";
-import { Shield, Search, FileText, ArrowRight } from "lucide-react";
+import {
+  Shield,
+  Search,
+  FileText,
+  MessageSquare,
+  HelpCircle,
+  Award,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,19 +18,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
 import AnimatedLogo from "@/components/AnimatedLogo";
+import ProcessFlux from "@/components/ProcessFlux";
 
-const FeatureCard = ({
+interface FeatureCardProps {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+const FeatureCard: React.FC<FeatureCardProps> = ({
   icon: Icon,
   title,
   description,
-}: {
-  icon: React.ComponentType<any>;
-  title: string;
-  description: string;
 }) => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true });
   const mainControls = useAnimation();
 
@@ -44,7 +53,7 @@ const FeatureCard = ({
       animate={mainControls}
       transition={{ duration: 0.5, delay: 0.25 }}
     >
-      <Card>
+      <Card className="h-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Icon className="h-6 w-6 text-primary" />
@@ -59,34 +68,29 @@ const FeatureCard = ({
   );
 };
 
-export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
+const Home: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 dark:from-gray-900 dark:to-gray-800">
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
         <nav className="container mx-auto px-6 py-3 flex justify-between items-center">
-          <Link to="/">
-            <AnimatedLogo className="text-2xl font-bold" />
+          <Link to="/" className="text-2xl font-bold text-primary">
+            <AnimatedLogo className="inline" />
           </Link>
           <div className="space-x-4">
-            <Link to="/register">
+            {/* <Link to="/register">
               <Button variant="ghost">Registrar Item</Button>
             </Link>
+            <Link to="/new-report">
+              <Button variant="ghost">Enviar Denúncia</Button>
+            </Link> */}
             <Link to="/login">
-              <Button>Login da Polícia</Button>
+              <Button>Entrar</Button>
             </Link>
           </div>
         </nav>
       </header>
 
-      <main className="pt-20 flex-grow">
+      <main className="pt-20">
         <section className="container mx-auto px-6 py-20 text-center">
           <motion.h1
             className="text-5xl font-bold mb-6"
@@ -102,22 +106,21 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            Empoderando comunidades e autoridades com recuperação de itens
-            roubados baseada em IA.
+            Empoderando comunidades e policiais com recuperação de itens
+            roubados e assistência pública usando IA.
           </motion.p>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
+            className="space-x-4"
           >
             <Link to="/register">
-              <Button size="lg" className="mr-4">
-                Registrar Item Roubado
-              </Button>
+              <Button size="lg">Registrar Item Roubado</Button>
             </Link>
-            <Link to="/login">
+            <Link to="/new-report">
               <Button size="lg" variant="outline">
-                Login da Polícia
+                Enviar Denúncia
               </Button>
             </Link>
           </motion.div>
@@ -129,53 +132,69 @@ export default function Home() {
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <FeatureCard
-              icon={FileText}
+              icon={Shield}
               title="Registrar Itens"
-              description="Relate itens roubados com descrições detalhadas e dados de localização."
+              description="Denuncie itens roubados com descrições detalhadas e localização."
+            />
+            <FeatureCard
+              icon={MessageSquare}
+              title="Denúncia com IA"
+              description="Envie denúncias pelo assistente de chat de IA ou por formulário."
             />
             <FeatureCard
               icon={Search}
-              title="Busca com IA"
-              description="Nossos algoritmos avançados de IA ajudam a localizar itens roubados."
+              title="Busca Avançada"
+              description="Nossos algoritmos de IA ajudam a localizar itens roubados."
             />
             <FeatureCard
-              icon={Shield}
-              title="Acesso à Polícia"
-              description="Pessoal autorizado pode acessar e analisar dados de itens roubados."
+              icon={HelpCircle}
+              title="Assistência Pública"
+              description="Contribua para investigações com informações valiosas."
+            />
+            <FeatureCard
+              icon={Award}
+              title="Experiência Gamificada"
+              description="Ganhe XP, suba de nível e colete medalhas ao contribuir."
+            />
+            <FeatureCard
+              icon={FileText}
+              title="Painel Completo"
+              description="Acesse seu perfil, acompanhe seu impacto e gerencie contribuições."
             />
           </div>
         </section>
 
-        <section className="container mx-auto px-6 py-20 relative overflow-hidden">
-          <motion.div
-            className="absolute inset-0 z-0"
-            style={{
-              backgroundImage: "url('/placeholder.svg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              filter: "blur(8px)",
-              transform: `translateY(${scrollY * 0.5}px)`,
-            }}
-          />
-          <div className="relative z-10 bg-white/90 dark:bg-gray-800/90 p-12 rounded-lg shadow-lg">
+        <ProcessFlux />
+
+        <section className="container mx-auto px-6 py-20">
+          <div className="bg-white dark:bg-gray-800 p-12 rounded-lg shadow-lg">
             <h2 className="text-3xl font-bold mb-6">
-              Junte-se à Luta Contra o Roubo
+              Junte-se à Luta Contra o Crime
             </h2>
             <p className="text-lg mb-8">
-              O RastreIA é mais que uma ferramenta—é uma iniciativa comunitária
-              para combater o roubo e recuperar itens roubados. Ao utilizar
-              tecnologia de IA e colaborar com as autoridades, estamos tornando
-              nossas comunidades mais seguras.
+              O RastreIA é mais que uma ferramenta – é uma iniciativa da
+              comunidade contra roubos, assistindo as autoridades. Com a
+              tecnologia de IA e colaboração, tornamos as comunidades mais
+              seguras, uma denúncia de cada vez.
             </p>
             <Link to="/register">
-              <Button size="lg" className="group">
-                Comece Agora
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <Button size="lg" className="w-full sm:w-auto">
+                Registrar Item Roubado
               </Button>
             </Link>
           </div>
         </section>
       </main>
+      <footer className="bg-gray-100 dark:bg-gray-900 py-8 mt-auto">
+        <div className="container mx-auto px-6 text-center">
+          <p>
+            &copy; {new Date().getFullYear()} RastreIA. Todos os direitos
+            reservados.
+          </p>
+        </div>
+      </footer>
     </div>
   );
-}
+};
+
+export default Home;

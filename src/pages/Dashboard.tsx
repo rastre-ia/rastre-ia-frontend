@@ -89,7 +89,13 @@ export default function Dashboard() {
     <nav className="space-y-2">
       <Button variant="ghost" className="w-full justify-start">
         <BarChart3 className="mr-2 h-4 w-4" />
-        Dashboard
+        Itens roubados
+      </Button>
+      <Button variant="ghost" className="w-full justify-start">
+        Solicitar assistência pública
+      </Button>
+      <Button variant="ghost" className="w-full justify-start">
+        Colaboração civil
       </Button>
       <Button
         variant="ghost"
