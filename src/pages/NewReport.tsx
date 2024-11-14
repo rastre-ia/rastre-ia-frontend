@@ -107,7 +107,7 @@ export default function NewReport() {
                 </TabsTrigger>
                 <TabsTrigger value="form">
                   <FileText className="h-4 w-4 mr-2" />
-                  Formulário Tradicional
+                  Formulário
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="ai-chat">
